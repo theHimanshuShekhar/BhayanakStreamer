@@ -1,10 +1,10 @@
-<div class="h-screen w-screen text-white bg-indigo-900 overflow-hidden flex pt-4">
+<div class="h-screen w-screen text-white bg-indigo-900 flex pt-4 pb-8">
   <div class="text-3xl text-extrabold flex flex-col items-center">
 
     <!-- logo -->
     <div
-      class="mx-2 p-1 shadow bg-gray-300 hover:bg-indigo-700 hover:rounded-lg rounded-full transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-      <img src="assets/logo.jpg" class="h-16 w-16 transition rounded-full">
+      class="select-none mx-2 p-1 shadow bg-gray-300 hover:bg-indigo-700 hover:rounded-lg rounded-full transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+      <img src="assets/logo.jpg" class="select-none h-16 w-16 transition rounded-full">
     </div>
 
     <!-- sidebar -->
@@ -45,10 +45,10 @@
         </svg>
       </div>
 
-
     </div>
 
-
   </div>
-  <router-outlet></router-outlet>
+  <div class="flex-grow px-4">
+    <router-outlet></router-outlet>
+  </div>
 </div>
