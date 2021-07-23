@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-directory',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DirectoryComponent implements OnInit {
 
-  constructor() { }
+  profileJSON:string = '';
 
-  ngOnInit(): void {
+  constructor(public auth: AuthService) { }
+
+  ngOnInit(): void {}
+
+
+  login() {
+    this.auth.loginWithRedirect();
   }
 
 }

@@ -4,8 +4,7 @@
     <!-- logo -->
     <div
       class="select-none mx-2 p-1 shadow bg-white hover:bg-bhayanak-700 hover:rounded-lg rounded-full transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-      <img src="https://im.rediff.com/movies/2015/jan/02quiz1.jpg"
-        class="select-none h-16 w-16 transition rounded-full">
+      <img [src]="logo" class="select-none h-16 w-16 transition rounded-full">
     </div>
 
     <!-- sidebar -->
@@ -21,7 +20,7 @@
       </div>
 
       <!-- Room -->
-      <div (click)="goto('profile')"
+      <div (click)="goto('room')"
         class="p-3 rounded-lg hover:bg-bhayanak-700 hover:shadow-md transform transition duration-200 hover:scale-105">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
