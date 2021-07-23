@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "frontend": {
+    "bhayanak-streamer": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/frontend",
+            "outputPath": "dist/bhayanak-streamer",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -75,18 +75,23 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "frontend:build:production"
+              "browserTarget": "bhayanak-streamer:build:production"
             },
             "development": {
-              "browserTarget": "frontend:build:development"
+              "browserTarget": "bhayanak-streamer:build:development"
             }
+          },
+          "options": {
+            "sslKey": "../ca.key",
+            "sslCert": "../ca.crt",
+            "ssl": true
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "frontend:build"
+            "browserTarget": "bhayanak-streamer:build"
           }
         },
         "test": {
@@ -111,5 +116,5 @@
       }
     }
   },
-  "defaultProject": "frontend"
+  "defaultProject": "bhayanak-streamer"
 }
