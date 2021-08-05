@@ -12,11 +12,11 @@ export class DirectoryComponent implements OnInit {
 
   constructor(public auth: AuthService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
 
+  }
 
   login() {
     this.auth.loginWithRedirect();
   }
-
 }
