@@ -1,22 +1,18 @@
-<div class="bg-bhayanak-700 flex-grow-0 p-4 rounded-lg h-full">
-    <div class="flex flex-col justify-between h-full gap-4">
-        <form [formGroup]="createForm" class="flex flex-col justify-between">
-            <input formControlName="roomname" type="text" placeholder="Room name"
-                class="text-gray-800 font-semibold rounded-lg p-2 px-3 w-full" />
-
-            <input formControlName="password" type="password" placeholder="Password"
-                class="text-gray-800 rounded-lg w-full" />
-        </form>
-
-        <div class="rounded-lg flex flex-col-reverse">
-            <button type="submit" [disabled]="!createForm.valid"
-                class="align-bottom bg-bhayanak-900 border-0 border-bhayanak-900 rounded text-center font-bold text-xl cursor-pointer py-3 p-2 transform shadow-md transition duration-200 hover:scale-105 hover:bg-bhayanak-600"
-                (click)="createRoom()">Create
-            </button>
-            <div *ngIf="roomname.invalid && (roomname.dirty || roomname.touched)" class="text-red-400 py-1 text-center">
-                <div *ngIf="roomname.errors.required">
-                    Room name is required.
-                </div>
+<div class="flex flex-col justify-evenly gap-4 h-full">
+    <form [formGroup]="createForm" class="flex flex-col justify-center gap-5">
+        <div class="flex flex-col flex-grow gap-4">
+            <input formControlName="roomname" type="text" placeholder="Room name" class="text-gray-800 rounded-lg" />
+            <input formControlName="password" type="password" placeholder="Password" class="text-gray-800 rounded-lg" />
+        </div>
+    </form>
+    <div class="rounded-lg flex flex-col-reverse">
+        <button type="submit" [disabled]="!createForm.valid"
+            class="align-bottom bg-bhayanak-900 border-0 border-bhayanak-900 rounded text-center font-bold text-xl cursor-pointer py-3 p-2 transform shadow-md transition duration-200 hover:scale-105 hover:bg-bhayanak-600"
+            (click)="createRoom()">Create
+        </button>
+        <div *ngIf="roomname.invalid && (roomname.dirty || roomname.touched)" class="text-red-400 py-1 text-center">
+            <div *ngIf="roomname.errors.required">
+                Room name is required.
             </div>
         </div>
     </div>
