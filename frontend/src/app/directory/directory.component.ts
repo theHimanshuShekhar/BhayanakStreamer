@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { Socket } from 'ngx-socket-io';
 
 interface roomData {
   name: string;
@@ -24,13 +25,16 @@ export class DirectoryComponent implements OnInit {
 
   currentUsername: string | undefined = '';
 
-
   profileJSON:string = '';
 
-  constructor(public auth: AuthService) { }
+  userCount:number = 0;
+
+  constructor(public auth: AuthService, private socket:Socket) { }
 
   ngOnInit(): void {
     this.auth.user$.subscribe(user=>this.currentUsername = user?.name);
+    this.socket.emit('count')
+    this.socket.on('count', (count:number) => this.userCount = count)
   }
 
   onCreateRoom(roomData:roomData) {
