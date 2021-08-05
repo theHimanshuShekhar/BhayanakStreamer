@@ -18,7 +18,7 @@ import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 
 // Configuration
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: environment.backendURL, options: {} };
 
 @NgModule({
   declarations: [
