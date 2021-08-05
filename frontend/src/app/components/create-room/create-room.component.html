@@ -1,21 +1,22 @@
-<div class="bg-bhayanak-700 flex-grow-0 p-4 rounded-lg">
+<div class="bg-bhayanak-700 flex-grow-0 p-4 rounded-lg h-full">
+    <div class="flex flex-col justify-between h-full gap-4">
+        <form [formGroup]="createForm" class="flex flex-col justify-between">
+            <input formControlName="roomname" type="text" placeholder="Room name"
+                class="text-gray-800 font-semibold rounded-lg p-2 px-3 w-full" />
 
-    <form [formGroup]="createForm" class="space-y-4 px-4 flex flex-col">
-        <input formControlName="roomname" type="text" placeholder="Room name"
-            class="text-gray-800 font-semibold rounded-lg p-2 px-3 w-full" />
+            <input formControlName="password" type="password" placeholder="Password"
+                class="text-gray-800 rounded-lg w-full" />
+        </form>
 
-        <input formControlName="password" type="password" placeholder="Password"
-            class="text-gray-800 rounded-lg p-2 px-3 w-full" />
-    </form>
-
-    <div class=" px-4 py-4 rounded-lg flex-grow flex flex-col-reverse">
-        <button type="submit" [disabled]="!createForm.valid"
-            class="w-full align-bottom bg-bhayanak-900 border-0 border-bhayanak-900 rounded text-center font-bold text-2xl cursor-pointer py-3 p-2 transform shadow-md transition duration-200 hover:scale-105 hover:bg-bhayanak-600"
-            (click)="createRoom()">Create
-        </button>
-        <div *ngIf="roomname.invalid && (roomname.dirty || roomname.touched)" class="text-red-400 py-1">
-            <div *ngIf="roomname.errors.required">
-                Room name is required.
+        <div class="rounded-lg flex flex-col-reverse">
+            <button type="submit" [disabled]="!createForm.valid"
+                class="align-bottom bg-bhayanak-900 border-0 border-bhayanak-900 rounded text-center font-bold text-xl cursor-pointer py-3 p-2 transform shadow-md transition duration-200 hover:scale-105 hover:bg-bhayanak-600"
+                (click)="createRoom()">Create
+            </button>
+            <div *ngIf="roomname.invalid && (roomname.dirty || roomname.touched)" class="text-red-400 py-1 text-center">
+                <div *ngIf="roomname.errors.required">
+                    Room name is required.
+                </div>
             </div>
         </div>
     </div>

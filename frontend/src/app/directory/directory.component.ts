@@ -51,6 +51,14 @@ export class DirectoryComponent implements OnInit {
     this.roomService.createRoom({...roomData, owner:this.currentUsername, created: new Date() })
   }
 
+  joinRoom(room:roomDetails) {
+    this.roomService.joinRoom(room);
+  }
+
+  sendPing(room:roomDetails) {
+    this.roomService.sendPing(room);
+  }
+
 
   login() {
     this.auth.loginWithRedirect();

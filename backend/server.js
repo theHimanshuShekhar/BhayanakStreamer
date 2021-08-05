@@ -34,4 +34,18 @@ io.on('connection', socket => {
         roomList.push(roomData);
         io.emit('getRooms', roomList);
     });
+
+    // join room
+    socket.on('joinRoom', roomName => {
+        let roomID = (roomName.owner + roomName.name + roomName.created).replace(/\W/g, '');
+        socket.join(roomID);
+        console.log(socket.id,'joined',roomID);
+    });
+
+    // ping pong
+    socket.on('ping', (roomName) => {
+        let roomID = (roomName.owner + roomName.name + roomName.created).replace(/\W/g, '');
+        console.log('ping',roomID)
+        io.to(roomID).emit('pong', socket.id + ' PONG!');
+    });
 })
