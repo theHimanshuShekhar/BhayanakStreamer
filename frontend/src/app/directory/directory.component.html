@@ -18,7 +18,7 @@
 
     <div class="my-8 h-full w-full">
         <div class="flex flex-row justify-start gap-4">
-            <app-create-room *ngIf="!(this.auth.isAuthenticated$ | async)" (roomDetails)="onCreateRoom($event)">
+            <app-create-room *ngIf="(this.auth.isAuthenticated$ | async)" (roomDetails)="onCreateRoom($event)">
             </app-create-room>
             <div *ngFor="let room of roomList" class="bg-bhayanak-700 flex-grow-0 p-4 rounded-lg">
                 {{room.name}}
