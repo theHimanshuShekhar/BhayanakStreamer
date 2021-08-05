@@ -1,0 +1,19 @@
+{
+  "name": "bhayanakstreamer-backend",
+  "version": "0.0.1",
+  "description": "backend socket.io server for Bhayanak Streamer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "theHimanshuShekhar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
