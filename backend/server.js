@@ -9,6 +9,7 @@ const io = new Server(server, {cors: {origin: '*'}});
 
 
 let userList = [];
+let roomList = [];
 
 // Client connects
 io.on('connection', socket => {
@@ -16,11 +17,21 @@ io.on('connection', socket => {
     userList.push(socket)
 
     // Active Clients
-    socket.on('count', req=> socket.emit('count', userList.length))
+    io.emit('count', userList.length)
+
+    // Active Rooms
+    socket.on('getRooms', () => socket.emit('getRooms',roomList));
 
     // User disconnect
     socket.on("disconnect", () => {
         console.log("User disconnected", socket.id);
         userList.pop(userList.indexOf(socket));
+        io.emit('count', userList.length)
+    });
+
+    // create new room and update roomlist
+    socket.on('createRoom', roomData => {
+        roomList.push(roomData);
+        io.emit('getRooms', roomList);
     });
 })

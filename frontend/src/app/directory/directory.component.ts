@@ -1,6 +1,8 @@
 import { Component, OnInit} from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { Socket } from 'ngx-socket-io';
+
+import { AuthService } from '@auth0/auth0-angular';
+import { RoomService } from '../services/room.service';
 
 interface roomData {
   name: string;
@@ -29,18 +31,26 @@ export class DirectoryComponent implements OnInit {
 
   userCount:number = 0;
 
-  constructor(public auth: AuthService, private socket:Socket) { }
+  constructor(public auth: AuthService,
+    private roomService: RoomService,
+    private socket:Socket) { }
 
   ngOnInit(): void {
     this.auth.user$.subscribe(user=>this.currentUsername = user?.name);
-    this.socket.emit('count')
-    this.socket.on('count', (count:number) => this.userCount = count)
+
+    // Get active users
+    this.socket.on('count', (count:number) => this.userCount = count);
+
+    // Get active rooms
+    this.socket.emit('getRooms');
+    this.socket.on('getRooms', (rooms:Array<roomDetails>) => this.roomList = rooms);
   }
 
   onCreateRoom(roomData:roomData) {
     // Create room from room service
-    this.roomList.push({...roomData, owner:this.currentUsername, created: new Date() });
+    this.roomService.createRoom({...roomData, owner:this.currentUsername, created: new Date() })
   }
+
 
   login() {
     this.auth.loginWithRedirect();
