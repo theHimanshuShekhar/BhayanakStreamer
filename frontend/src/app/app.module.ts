@@ -18,6 +18,8 @@ import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 
 // Configuration
+
+// Use production backend url
 const config: SocketIoConfig = { url: environment.backendURL, options: {} };
 
 @NgModule({
