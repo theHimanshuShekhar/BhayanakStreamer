@@ -19,8 +19,9 @@
     <div class="h-full w-full overflow-y-auto">
         <div class="flex flex-row justify-start gap-4 flex-wrap">
 
-            <div class="bg-bhayanak-700 p-4 rounded-lg w-full md:w-2/4 lg:w-1/5">
-                <app-create-room *ngIf="(this.auth.isAuthenticated$ | async)" (roomDetails)="onCreateRoom($event)">
+            <div *ngIf="(this.auth.isAuthenticated$ | async)"
+                class="bg-bhayanak-700 p-4 rounded-lg w-full md:w-2/4 lg:w-1/5">
+                <app-create-room (roomDetails)="onCreateRoom($event)">
                 </app-create-room>
             </div>
 
