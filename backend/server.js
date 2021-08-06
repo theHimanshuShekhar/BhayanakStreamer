@@ -40,6 +40,26 @@ io.on('connection', socket => {
         let roomID = (roomName.owner + roomName.name + roomName.created).replace(/\W/g, '');
         socket.join(roomID);
         console.log(socket.id,'joined',roomID);
+        socket.emit('joinRoom', roomName)
+    });
+
+    // get users joined in a room
+    socket.on('getRoomUsers', async (roomID) => {
+
+        // Fetch sockets connected to room
+        await io.in(roomID).fetchSockets().then(async joinedSockets => {
+            let joinedUsers = [];
+
+            // Loop over all connected sockets
+            await joinedSockets.forEach(async joinedSocket => {
+                await joinedSocket.emit("getUserData",'getUserData', (user) =>{
+                    console.log('push user in list', user)
+                    joinedUsers.push(user)
+                });
+            });
+            console.log('userlist',joinedUsers)
+            io.in(roomID).emit('getRoomUsers',joinedUsers)
+        })
     });
 
     // ping pong
