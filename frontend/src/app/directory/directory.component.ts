@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 
 import { AuthService } from '@auth0/auth0-angular';
 import { RoomService } from '../services/room.service';
+import { Router } from '@angular/router';
 
 interface roomData {
   name: string;
@@ -33,7 +34,8 @@ export class DirectoryComponent implements OnInit {
 
   constructor(public auth: AuthService,
     private roomService: RoomService,
-    private socket:Socket) { }
+    private socket:Socket,
+    private router:Router) { }
 
   ngOnInit(): void {
     this.auth.user$.subscribe(user=>this.currentUsername = user?.name);
@@ -52,13 +54,12 @@ export class DirectoryComponent implements OnInit {
   }
 
   joinRoom(room:roomDetails) {
-    this.roomService.joinRoom(room);
-  }
+    // this.roomService.joinRoom(room);
 
-  sendPing(room:roomDetails) {
-    this.roomService.sendPing(room);
+    // Navigate to room page
+    let roomID = (room.owner + room.name + room.created).replace(/\W/g, '');
+    this.router.navigate(['room'], {queryParams:{id:roomID}})
   }
-
 
   login() {
     this.auth.loginWithRedirect();
