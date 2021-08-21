@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { RoomService } from '../services/room.service';
 import { AuthService } from '@auth0/auth0-angular';
-import { take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

@@ -28,6 +28,14 @@ io.on("connection", (socket) => {
   // Active Rooms
   socket.on("getRooms", () => socket.emit("getRooms", roomList));
 
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) => {
+      console.log("room", room);
+      socket.leave(room);
+      updateRoomUsers(room);
+    });
+  });
+
   // User disconnect
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
@@ -42,15 +50,18 @@ io.on("connection", (socket) => {
   });
 
   // join room
-  socket.on("joinRoom", async (roomID) => {
+  socket.on("joinRoom", (roomID) => {
     socket.join(roomID);
     console.log(socket.id, "joined", roomID);
+    updateRoomUsers(roomID);
+  });
 
+  async function updateRoomUsers(roomID) {
     // send list of joined users to whole room
     const joinedSockets = await io.in(roomID).fetchSockets();
     io.to(roomID).emit(
       "getJoinedSockets",
       joinedSockets.map((socket) => socket.data.user)
     );
-  });
+  }
 });
