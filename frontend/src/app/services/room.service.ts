@@ -9,36 +9,36 @@ interface roomDetails {
   created: Date;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoomService {
+  currentRoom?: string;
 
-  currentRoom?:roomDetails;
+  roomUsers?: Array<any>;
 
-  constructor(private socket:Socket, private router:Router) { }
+  constructor(private socket: Socket, private router: Router) {}
 
-  createRoom(roomDetails:roomDetails) {
+  createRoom(roomDetails: roomDetails) {
     this.socket.emit('createRoom', roomDetails);
   }
 
-  sendPing(room:roomDetails) {
-    this.socket.emit('ping',room);
-    this.socket.on('pong', (pong:string) => console.log('ponged',pong))
+  get CurrentRoom(): string | undefined {
+    return this.currentRoom;
   }
 
-  get CurrentRoom():roomDetails | undefined {return this.currentRoom}
+  get RoomUsers(): Array<any> | undefined {
+    return this.roomUsers;
+  }
 
-  joinRoom(room:roomDetails) {
-    this.socket.emit('joinRoom', room);
-    this.socket.on('joinRoom', (room:roomDetails) => {
-      // Save room in current room
-      this.currentRoom = room;
+  joinRoom(roomID: string) {
+    this.socket.emit('joinRoom', roomID);
+    // Save room in current room
+    this.currentRoom = roomID;
 
-      // Navigate to room page
-      let roomID = (room.owner + room.name + room.created).replace(/\W/g, '');
-      this.router.navigate(['room'], {queryParams:{id:roomID}})
+    this.socket.on('getJoinedSockets', (joinedSockets: Array<any>) => {
+      console.log(joinedSockets);
+      this.roomUsers = joinedSockets;
     });
   }
 }
