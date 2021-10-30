@@ -54,6 +54,11 @@ io.on("connection", (socket) => {
     socket.join(roomID);
     console.log(socket.id, "joined", roomID);
     updateRoomUsers(roomID);
+
+    roomList.forEach((room) => {
+      let roomName = (room.owner + room.name + room.created).replace(/\W/g, "");
+      if (roomName === roomID) socket.emit("getRoomData", room);
+    });
   });
 
   async function updateRoomUsers(roomID) {
@@ -64,4 +69,9 @@ io.on("connection", (socket) => {
       joinedSockets.map((socket) => socket.data.user)
     );
   }
+
+  // rec stream blob
+  socket.on("sendStream", (streamData) => {
+    io.to(streamData.roomID).emit("videoStreamData", streamData.data);
+  });
 });
