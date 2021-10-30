@@ -30,7 +30,7 @@ export class RoomComponent implements OnInit {
     this.recievedstream.addEventListener('sourceopen', () => {
       console.log('addSourceBuffer');
       this.sourceBuffer = this.recievedstream.addSourceBuffer(
-        'video/webm;codecs=vp8'
+        'video/webm;codecs=vp8,opus'
       );
     });
   }
