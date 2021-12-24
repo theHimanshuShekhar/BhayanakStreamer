@@ -17,7 +17,8 @@ export class RoomComponent implements OnInit, AfterViewInit {
   userList?: Array<any>;
   stream?: any;
   recievedstream: MediaSource = new MediaSource();
-  sourceBuffer?: SourceBuffer;
+
+  lastcodec: string = '';
 
   constructor(
     private socket: Socket,
@@ -32,12 +33,16 @@ export class RoomComponent implements OnInit, AfterViewInit {
     );
   }
   ngOnInit(): void {
+    let sourceBuffer: SourceBuffer;
     // Create mediasource and assign to videoplayer src
     this.recievedstream.addEventListener('sourceopen', () => {
-      console.log('addSourceBuffer');
-      this.sourceBuffer = this.recievedstream.addSourceBuffer(
-        'video/webm;codecs=vp8'
-      );
+      if (this.recievedstream.sourceBuffers.length === 0) {
+        console.log('addSourceBuffer');
+        sourceBuffer = this.recievedstream.addSourceBuffer(
+          'video/webm;codecs=vp8'
+        );
+        this.lastcodec = 'video/webm;codecs=vp8';
+      }
     });
 
     this.auth.user$.subscribe((user: any) => {
@@ -50,8 +55,18 @@ export class RoomComponent implements OnInit, AfterViewInit {
           if (roomData.owner !== user.name) {
             // recieve binary blobs of webm and add to mediasource
             this.socket.on('videoStreamData', (blob: any) => {
-              console.log(this.recievedstream.readyState);
-              if (this.sourceBuffer) this.sourceBuffer.appendBuffer(blob);
+              if (!sourceBuffer.updating && this.lastcodec !== blob.mimeType) {
+                //@ts-ignore
+                sourceBuffer.changeType(blob.mimeType);
+                this.lastcodec = blob.mimeType;
+              }
+              if (!sourceBuffer.updating) {
+                try {
+                  sourceBuffer.appendBuffer(blob.data);
+                } catch (err) {
+                  console.error(err);
+                }
+              }
             });
           }
         });
@@ -68,11 +83,11 @@ export class RoomComponent implements OnInit, AfterViewInit {
       })
       .then((stream: any) => {
         this.stream = stream;
-        console.log(stream);
         this.roomService.sendStream(stream);
 
         if (this.stream && this.videoPlayer)
           this.videoPlayer.nativeElement.srcObject = this.stream;
+        // this.videoPlayer.nativeElement.
       });
   }
 }

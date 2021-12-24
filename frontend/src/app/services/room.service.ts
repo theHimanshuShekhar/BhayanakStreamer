@@ -56,6 +56,7 @@ export class RoomService {
     this.mediaRecorder.ondataavailable = (blob: any) => {
       this.socket.emit('sendStream', {
         roomID: this.currentRoom,
+        mimeType: this.mediaRecorder.mimeType,
         data: blob.data,
       });
     };

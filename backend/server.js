@@ -72,6 +72,6 @@ io.on("connection", (socket) => {
 
   // rec stream blob
   socket.on("sendStream", (streamData) => {
-    io.to(streamData.roomID).emit("videoStreamData", streamData.data);
+    io.to(streamData.roomID).emit("videoStreamData", streamData);
   });
 });
