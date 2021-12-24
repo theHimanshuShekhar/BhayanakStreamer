@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { RoomService } from '../services/room.service';
 import { AuthService } from '@auth0/auth0-angular';
@@ -9,14 +9,14 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss'],
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, AfterViewInit {
   @ViewChild('VideoPlayer', { static: false })
   public videoPlayer: any;
 
   roomName?: string;
   userList?: Array<any>;
   stream?: any;
-  recievedstream: MediaSource;
+  recievedstream: MediaSource = new MediaSource();
   sourceBuffer?: SourceBuffer;
 
   constructor(
@@ -24,18 +24,22 @@ export class RoomComponent implements OnInit {
     private auth: AuthService,
     public roomService: RoomService,
     private route: ActivatedRoute
-  ) {
-    this.recievedstream = new MediaSource();
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.videoPlayer.nativeElement.src = URL.createObjectURL(
+      this.recievedstream
+    );
+  }
+  ngOnInit(): void {
     // Create mediasource and assign to videoplayer src
     this.recievedstream.addEventListener('sourceopen', () => {
       console.log('addSourceBuffer');
       this.sourceBuffer = this.recievedstream.addSourceBuffer(
-        'video/webm;codecs=vp8,opus'
+        'video/webm;codecs=vp8'
       );
     });
-  }
 
-  ngOnInit(): void {
     this.auth.user$.subscribe((user: any) => {
       if (user) {
         let roomID = this.route.snapshot.queryParamMap.get('id');
@@ -44,12 +48,9 @@ export class RoomComponent implements OnInit {
         this.socket.on('getRoomData', (roomData: any) => {
           if (roomData.owner === user.name) this.captureStream();
           if (roomData.owner !== user.name) {
-            this.videoPlayer.nativeElement.src = URL.createObjectURL(
-              this.recievedstream
-            );
-
             // recieve binary blobs of webm and add to mediasource
             this.socket.on('videoStreamData', (blob: any) => {
+              console.log(this.recievedstream.readyState);
               if (this.sourceBuffer) this.sourceBuffer.appendBuffer(blob);
             });
           }
@@ -67,6 +68,7 @@ export class RoomComponent implements OnInit {
       })
       .then((stream: any) => {
         this.stream = stream;
+        console.log(stream);
         this.roomService.sendStream(stream);
 
         if (this.stream && this.videoPlayer)
